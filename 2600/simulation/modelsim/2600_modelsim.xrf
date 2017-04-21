@@ -1,0 +1,8 @@
+vendor_name = ModelSim
+source_file = 1, /home/mags/uiuc/ECE385/2600/TIA_Testbench.sv
+source_file = 1, /home/mags/uiuc/ECE385/2600/TIA.sv
+source_file = 1, /home/mags/uiuc/ECE385/2600/a2600.sv
+source_file = 1, /home/mags/uiuc/ECE385/2600/db/2600.cbx.xml
+design_name = a2600
+instance = comp, \a~output , a~output, a2600, 1
+instance = comp, \b~input , b~input, a2600, 1

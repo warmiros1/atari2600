@@ -1,0 +1,28 @@
+# do 2600_run_msim_rtl_verilog.do
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Model Technology ModelSim LE vmap 10.3d Lib Mapping Utility 2014.10 Oct  7 2014
+# vmap -modelsim_quiet work rtl_work 
+# Copying /home/mags/altera/15.0/modelsim_ase/linuxaloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied /home/mags/altera/15.0/modelsim_ase/linuxaloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+# 
+# vlog -sv -work work +incdir+/home/mags/uiuc/ECE385/2600 {/home/mags/uiuc/ECE385/2600/a2600.sv}
+# Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+# Start time: 14:34:49 on Apr 06,2017
+# vlog -reportprogress 300 -sv -work work "+incdir+/home/mags/uiuc/ECE385/2600" /home/mags/uiuc/ECE385/2600/a2600.sv 
+# -- Compiling module a2600
+# 
+# Top level modules:
+# 	a2600
+# End time: 14:34:49 on Apr 06,2017, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# 
+# stdin: <EOF>
+# Load canceled
+quit

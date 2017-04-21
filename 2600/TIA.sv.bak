@@ -1,0 +1,75 @@
+module TIA(input  logic       NTSC_Clk,
+			  input  logic [12:0] A;
+			  output logic [6:0]  CurColor,
+			  output logic [8:0]  ScanLine,
+			  output logic [7:0]  xPos,
+			  output logic RDY);
+begin
+	//Determine CS from address
+	logic CS;
+	assign CS = (~A[12] & ~A[7]);
+
+	//VSync and HSync are internal, since 
+	logic VSync, HSync;
+	
+	//Is processor waiting for Sync?
+	logic Wsync;
+
+	//Nothing is drawn during VBlank period
+	logic Vblank;
+
+	//TIA Registers
+	logic [6:0] COLUBK; //BG Color
+
+	//Notes: Image is scanlines 40-231, Pixels 68-227
+
+	//Update Scanline and/or xPos
+	alway_ff @ (posedge NTSC_Clk)
+	begin
+		xPos = xPos + 1;
+		if (xPos >= 8'd228)
+		begin
+			xPos = 0;
+			ScanLine = ScanLine + 1;
+			if (Wsync == 1'b1) //If waiting for Sync, resume
+			begin
+				Wsync = 1'b0;
+				
+			end
+		end
+		if (ScanLine >= 9'd282)
+			ScanLine = 0;
+	end
+
+	//Output the proper color
+	always_comb
+	begin
+		CurColor = COLUBK; //TODO: Select color properly
+	end
+	
+	//Handle TIA I/O
+	alway_ff @ (posedge NTSC_Clk)
+	begin
+		if (CS) //Check we are accessing TIA on Databus
+		begin
+			unique case (A[5:0]): //Handle writes to TIA
+				6'h00: //VSync
+				begin
+					if (A[1]) //TODO: What happens if we VSYNC at a random time?
+					begin
+						VSync = 1'b1;
+						ScanLine = 8'd0;
+						xPos = 8'd0;
+					end
+				end
+				6'h01: //VBLANK
+				begin
+					VBlank = D[1]; //TODO: bits 6 and 7 (Someting to do with input control?)
+				end
+				6'h02: //WSYNC
+				6'h09:
+					COLUBK = D[7:1];
+			endcase
+		end
+	end
+endmodule
